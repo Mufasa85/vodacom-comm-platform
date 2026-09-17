@@ -4,7 +4,18 @@ import { NetworkIllustration } from "./network-illustration";
 export function BrandPanel() {
   return (
     <div className="relative hidden h-full flex-col justify-between overflow-hidden bg-primary px-12 py-10 text-white lg:flex">
-      <VodacomMark variant="light" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[url('/vodacome_pattern2.png')] bg-cover bg-center opacity-40 mix-blend-multiply"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-primary/10"
+      />
+
+      <div className="relative z-10">
+        <VodacomMark variant="light" />
+      </div>
 
       <div className="relative z-10 max-w-sm">
         <p className="text-[26px] font-semibold leading-[1.25] tracking-tight">

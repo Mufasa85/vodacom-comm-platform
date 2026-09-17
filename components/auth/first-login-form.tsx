@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { InsetInput } from "@/components/ui/inset-input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert } from "@/components/ui/alert";
@@ -65,10 +65,9 @@ export function FirstLoginForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-7 space-y-5" noValidate>
         <div className="space-y-1.5">
-          <Label htmlFor="fullName">Full name</Label>
-          <Input
+          <InsetInput
             id="fullName"
-            placeholder="Your full name"
+            label="Full name"
             invalid={!!errors.fullName}
             autoComplete="name"
             {...register("fullName")}
@@ -79,10 +78,9 @@ export function FirstLoginForm() {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="password">Create password</Label>
           <PasswordInput
             id="password"
-            placeholder="Choose a password"
+            label="Create password"
             invalid={!!errors.password}
             autoComplete="new-password"
             {...register("password")}
@@ -94,10 +92,9 @@ export function FirstLoginForm() {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="confirmPassword">Confirm password</Label>
           <PasswordInput
             id="confirmPassword"
-            placeholder="Re-enter your password"
+            label="Confirm password"
             invalid={!!errors.confirmPassword}
             autoComplete="new-password"
             {...register("confirmPassword")}

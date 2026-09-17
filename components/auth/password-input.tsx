@@ -3,31 +3,31 @@
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-import { Input, type InputProps } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { InsetInput, type InsetInputProps } from "@/components/ui/inset-input";
 
-const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, ...props }, ref) => {
+type PasswordInputProps = Omit<InsetInputProps, "type" | "trailing">;
+
+const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
+  (props, ref) => {
     const [visible, setVisible] = React.useState(false);
 
     return (
-      <div className="relative">
-        <Input
-          ref={ref}
-          type={visible ? "text" : "password"}
-          className={cn("pr-11", className)}
-          {...props}
-        />
-        <button
-          type="button"
-          onClick={() => setVisible((v) => !v)}
-          tabIndex={-1}
-          aria-label={visible ? "Hide password" : "Show password"}
-          className="absolute right-0 top-0 flex h-11 w-11 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
-        >
-          {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-        </button>
-      </div>
+      <InsetInput
+        ref={ref}
+        type={visible ? "text" : "password"}
+        trailing={
+          <button
+            type="button"
+            onClick={() => setVisible((v) => !v)}
+            tabIndex={-1}
+            aria-label={visible ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+            className="flex h-full w-full items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        }
+        {...props}
+      />
     );
   }
 );

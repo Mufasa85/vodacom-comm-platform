@@ -1,9 +1,10 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 /**
- * Original enterprise wordmark for the internal platform shell.
- * Deliberately does not reproduce Vodacom's trademarked speechmark —
- * uses an abstract signal-bars monogram instead.
+ * Wordmark de la plateforme : le logo Vodacom en médaillon circulaire
+ * suivi du nom du produit.
  */
 export function VodacomMark({
   variant = "dark",
@@ -17,15 +18,18 @@ export function VodacomMark({
     <div className={cn("flex items-center gap-2.5", className)}>
       <span
         className={cn(
-          "flex h-8 w-8 items-center justify-center rounded-[8px]",
-          isLight ? "bg-white" : "bg-primary"
+          "flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white",
+          isLight ? "ring-1 ring-white/40" : "ring-1 ring-border"
         )}
       >
-        <svg width="16" height="14" viewBox="0 0 16 14" fill="none">
-          <rect x="0" y="8" width="3" height="6" rx="1" fill={isLight ? "#E60000" : "#fff"} />
-          <rect x="6.5" y="4.5" width="3" height="9.5" rx="1" fill={isLight ? "#E60000" : "#fff"} />
-          <rect x="13" y="0" width="3" height="14" rx="1" fill={isLight ? "#E60000" : "#fff"} />
-        </svg>
+        <Image
+          src="/logo-vodacom.png"
+          alt="Vodacom"
+          width={36}
+          height={36}
+          priority
+          className="h-9 w-9 object-cover"
+        />
       </span>
       <span
         className={cn(

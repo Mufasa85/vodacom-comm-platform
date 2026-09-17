@@ -7,8 +7,7 @@ import Link from "next/link";
 import { ArrowLeft, MailCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { InsetInput } from "@/components/ui/inset-input";
 import { Alert } from "@/components/ui/alert";
 import {
   forgotPasswordSchema,
@@ -91,11 +90,10 @@ export function ForgotPasswordForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-7 space-y-5" noValidate>
         <div className="space-y-1.5">
-          <Label htmlFor="email">Work email</Label>
-          <Input
+          <InsetInput
             id="email"
+            label="Work email"
             type="email"
-            placeholder="name@vodacom.co.za"
             invalid={!!errors.email}
             autoComplete="email"
             {...register("email")}

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Bell, ChevronDown, Globe, Sun, Moon } from "lucide-react";
 
 import { useTheme } from "@/components/theme-provider";
+import { VodacomMark } from "@/components/auth/vodacom-mark";
 
 export function Topbar() {
   const [lang, setLang] = React.useState<"FR" | "EN">("FR");
@@ -13,7 +14,9 @@ export function Topbar() {
 
   return (
     <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4">
-      <div className="flex flex-1 items-center" />
+      <div className="flex flex-1 items-center">
+        <VodacomMark />
+      </div>
 
       <div className="flex items-center gap-1.5">
         <button

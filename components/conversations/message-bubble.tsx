@@ -10,6 +10,15 @@ import { cn } from "@/lib/utils";
 
 const quickReactions = ["👍", "❤️", "😂", "🎉"];
 
+/** Une couleur trop sombre (ex. le noir de TOBi) est illisible en thème sombre. */
+function isDarkColor(hex?: string) {
+  if (!hex || !/^#[0-9a-f]{6}$/i.test(hex)) return false;
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 < 0.4;
+}
+
 export function MessageBubble({
   message,
   sender,
@@ -55,7 +64,10 @@ export function MessageBubble({
       <div className={cn("flex max-w-[62%] flex-col", isMine && "items-end")}>
         {showMeta && !isMine && sender && (
           <span
-            className="mb-1 px-1 text-[12.5px] font-semibold"
+            className={cn(
+              "mb-1 px-1 text-[12.5px] font-semibold",
+              isDarkColor(sender.avatarColor) && "dark:!text-white"
+            )}
             style={{ color: sender.avatarColor }}
           >
             {sender.name}

@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { InsetInput } from "@/components/ui/inset-input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert } from "@/components/ui/alert";
@@ -72,11 +72,10 @@ export function LoginForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-7 space-y-5" noValidate>
         <motion.div initial="hidden" animate="show" custom={2} variants={fieldMotion} className="space-y-1.5">
-          <Label htmlFor="email">Work email</Label>
-          <Input
+          <InsetInput
             id="email"
+            label="Work email"
             type="email"
-            placeholder="name@vodacom.co.za"
             invalid={!!errors.email}
             autoComplete="email"
             {...register("email")}
@@ -87,18 +86,9 @@ export function LoginForm() {
         </motion.div>
 
         <motion.div initial="hidden" animate="show" custom={3} variants={fieldMotion} className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Link
-              href="/forgot-password"
-              className="text-[13px] font-medium text-primary hover:text-primary-hover"
-            >
-              Forgot password?
-            </Link>
-          </div>
           <PasswordInput
             id="password"
-            placeholder="Enter your password"
+            label="Password"
             invalid={!!errors.password}
             autoComplete="current-password"
             {...register("password")}
@@ -113,12 +103,20 @@ export function LoginForm() {
           animate="show"
           custom={4}
           variants={fieldMotion}
-          className="flex items-center gap-2"
+          className="flex items-center justify-between gap-3"
         >
-          <Checkbox id="remember" {...register("remember")} />
-          <Label htmlFor="remember" className="font-normal text-muted-foreground">
-            Keep me signed in on this device
-          </Label>
+          <span className="flex items-center gap-2">
+            <Checkbox id="remember" {...register("remember")} />
+            <Label htmlFor="remember" className="font-normal text-muted-foreground">
+              Keep me signed in on this device
+            </Label>
+          </span>
+          <Link
+            href="/forgot-password"
+            className="shrink-0 text-[13px] font-medium text-primary hover:text-primary-hover"
+          >
+            Forgot password?
+          </Link>
         </motion.div>
 
         <motion.div initial="hidden" animate="show" custom={5} variants={fieldMotion}>

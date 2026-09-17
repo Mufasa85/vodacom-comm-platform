@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Alert } from "@/components/ui/alert";
 import { PasswordInput } from "@/components/auth/password-input";
 import { PasswordStrength } from "@/components/auth/password-strength";
@@ -63,10 +62,9 @@ export function ResetPasswordForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-7 space-y-5" noValidate>
         <div className="space-y-1.5">
-          <Label htmlFor="password">New password</Label>
           <PasswordInput
             id="password"
-            placeholder="Enter a new password"
+            label="New password"
             invalid={!!errors.password}
             autoComplete="new-password"
             {...register("password")}
@@ -78,10 +76,9 @@ export function ResetPasswordForm() {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="confirmPassword">Confirm new password</Label>
           <PasswordInput
             id="confirmPassword"
-            placeholder="Re-enter your new password"
+            label="Confirm new password"
             invalid={!!errors.confirmPassword}
             autoComplete="new-password"
             {...register("confirmPassword")}

@@ -24,6 +24,8 @@ export function ChatWindow({
   React.useEffect(() => {
     setMessages(conversation?.messages ?? []);
     setReplyTo(null);
+    // On ne réinitialise qu'au changement de conversation, pas à chaque nouveau message.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversation?.id]);
 
   React.useEffect(() => {
@@ -112,43 +114,49 @@ export function ChatWindow({
         </div>
       )}
 
-      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto py-4">
-        {messages.length === 0 ? (
-          <div className="flex h-full items-center justify-center text-[13px] text-muted-foreground">
-            Aucun message pour le moment. Démarrez la conversation ci-dessous.
-          </div>
-        ) : (
-          messages.map((message, i) => {
-            const prev = messages[i - 1];
-            const showMeta = !prev || prev.senderId !== message.senderId || prev.kind === "system";
-            const sender =
-              message.senderId === "me"
-                ? { id: "me", name: currentUser.name, role: currentUser.role, avatarColor: "#111111" }
-                : participantMap.get(message.senderId);
-            const matchesSearch =
-              !searchQuery ||
-              (message.text ?? "").toLowerCase().includes(searchQuery.toLowerCase());
+      <div className="relative min-h-0 flex-1">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[url('/pattern.png')] bg-cover bg-center opacity-70 dark:opacity-[0.04]"
+        />
+        <div ref={scrollRef} className="relative h-full overflow-y-auto py-4">
+          {messages.length === 0 ? (
+            <div className="flex h-full items-center justify-center text-[13px] text-muted-foreground">
+              Aucun message pour le moment. Démarrez la conversation ci-dessous.
+            </div>
+          ) : (
+            messages.map((message, i) => {
+              const prev = messages[i - 1];
+              const showMeta = !prev || prev.senderId !== message.senderId || prev.kind === "system";
+              const sender =
+                message.senderId === "me"
+                  ? { id: "me", name: currentUser.name, role: currentUser.role, avatarColor: "#111111" }
+                  : participantMap.get(message.senderId);
+              const matchesSearch =
+                !searchQuery ||
+                (message.text ?? "").toLowerCase().includes(searchQuery.toLowerCase());
 
-            return (
-              <MessageBubble
-                key={message.id}
-                message={message}
-                sender={sender}
-                isMine={message.senderId === "me"}
-                showMeta={showMeta}
-                highlighted={!!searchQuery && matchesSearch && message.kind !== "system"}
-                onReact={(emoji) => handleReact(message.id, emoji)}
-              />
-            );
-          })
-        )}
+              return (
+                <MessageBubble
+                  key={message.id}
+                  message={message}
+                  sender={sender}
+                  isMine={message.senderId === "me"}
+                  showMeta={showMeta}
+                  highlighted={!!searchQuery && matchesSearch && message.kind !== "system"}
+                  onReact={(emoji) => handleReact(message.id, emoji)}
+                />
+              );
+            })
+          )}
 
-        {typing && (
-          <TypingIndicator
-            name={participants.find((p) => p.role === "agent" || p.role === "bot")?.name ?? "TOBi AI"}
-            color={participants.find((p) => p.role === "agent" || p.role === "bot")?.avatarColor}
-          />
-        )}
+          {typing && (
+            <TypingIndicator
+              name={participants.find((p) => p.role === "agent" || p.role === "bot")?.name ?? "TOBi AI"}
+              color={participants.find((p) => p.role === "agent" || p.role === "bot")?.avatarColor}
+            />
+          )}
+        </div>
       </div>
 
       <ChatComposer onSend={handleSend} replyTo={replyTo} onCancelReply={() => setReplyTo(null)} />

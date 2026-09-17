@@ -10,7 +10,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-[minmax(0,1fr)_480px]">
+    <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex flex-col px-6 py-8 sm:px-10 lg:px-16 lg:py-12">
         <div className="mb-10 flex items-center justify-between">
           <div className="lg:hidden">
@@ -24,7 +24,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
             {theme === "dark" ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
           </button>
         </div>
-        <div className="flex flex-1 items-center">
+        <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-[400px]">{children}</div>
         </div>
       </div>
