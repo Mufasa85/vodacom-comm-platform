@@ -7,20 +7,30 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { PasswordInput } from "@/components/auth/password-input";
 import { PasswordStrength } from "@/components/auth/password-strength";
+import { useLocale } from "@/components/locale-provider";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { type ResetPasswordValues, resetPasswordSchema } from "@/lib/validations/auth";
-
-const requirements = [
-  { test: (p: string) => p.length >= 8, label: "At least 8 characters" },
-  { test: (p: string) => /[A-Z]/.test(p), label: "One uppercase letter" },
-  { test: (p: string) => /[0-9]/.test(p), label: "One number" },
-  { test: (p: string) => /[^A-Za-z0-9]/.test(p), label: "One symbol" },
-];
+import { createResetPasswordSchema, type ResetPasswordValues } from "@/lib/validations/auth";
 
 export function ResetPasswordForm() {
   const router = useRouter();
+  const { t, validation } = useLocale();
   const [serverError, setServerError] = React.useState<string | null>(null);
+
+  const resetPasswordSchema = React.useMemo(
+    () => createResetPasswordSchema(validation),
+    [validation]
+  );
+
+  const requirements = React.useMemo(
+    () => [
+      { test: (p: string) => p.length >= 8, label: t("auth.reset.reqLength") },
+      { test: (p: string) => /[A-Z]/.test(p), label: t("auth.reset.reqUpper") },
+      { test: (p: string) => /[0-9]/.test(p), label: t("auth.reset.reqNumber") },
+      { test: (p: string) => /[^A-Za-z0-9]/.test(p), label: t("auth.reset.reqSymbol") },
+    ],
+    [t]
+  );
 
   const {
     register,
@@ -43,11 +53,9 @@ export function ResetPasswordForm() {
   return (
     <div>
       <h1 className="text-[24px] font-semibold tracking-tight text-foreground">
-        Create a new password
+        {t("auth.reset.title")}
       </h1>
-      <p className="mt-1.5 text-[14px] text-muted-foreground">
-        Choose a strong password you haven&apos;t used before on this account.
-      </p>
+      <p className="mt-1.5 text-[14px] text-muted-foreground">{t("auth.reset.subtitle")}</p>
 
       {serverError && (
         <div className="mt-6">
@@ -59,7 +67,7 @@ export function ResetPasswordForm() {
         <div className="space-y-1.5">
           <PasswordInput
             id="password"
-            label="New password"
+            label={t("auth.reset.newPassword")}
             invalid={!!errors.password}
             autoComplete="new-password"
             {...register("password")}
@@ -73,7 +81,7 @@ export function ResetPasswordForm() {
         <div className="space-y-1.5">
           <PasswordInput
             id="confirmPassword"
-            label="Confirm new password"
+            label={t("auth.reset.confirmPassword")}
             invalid={!!errors.confirmPassword}
             autoComplete="new-password"
             {...register("confirmPassword")}
@@ -101,7 +109,7 @@ export function ResetPasswordForm() {
         </ul>
 
         <Button type="submit" className="w-full" size="lg" loading={isSubmitting}>
-          {isSubmitting ? "Updating password" : "Update password"}
+          {isSubmitting ? t("auth.reset.updating") : t("auth.reset.update")}
         </Button>
       </form>
     </div>

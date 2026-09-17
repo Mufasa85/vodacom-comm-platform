@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Mic, Paperclip, Reply, Send, Smile, Square, X } from "lucide-react";
 import * as React from "react";
+import { useLocale } from "@/components/locale-provider";
 import { Button } from "@/components/ui/button";
 import type { Message } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
@@ -18,6 +19,7 @@ export function ChatComposer({
   replyTo?: Message | null;
   onCancelReply?: () => void;
 }) {
+  const { t } = useLocale();
   const [value, setValue] = React.useState("");
   const [emojiOpen, setEmojiOpen] = React.useState(false);
   const [recording, setRecording] = React.useState(false);
@@ -26,8 +28,8 @@ export function ChatComposer({
 
   React.useEffect(() => {
     if (!recording) return;
-    const t = setInterval(() => setSeconds((s) => s + 1), 1000);
-    return () => clearInterval(t);
+    const timer = setInterval(() => setSeconds((s) => s + 1), 1000);
+    return () => clearInterval(timer);
   }, [recording]);
 
   function handleSend() {
@@ -56,7 +58,10 @@ export function ChatComposer({
           >
             <Reply className="h-3.5 w-3.5 shrink-0 text-primary" />
             <span className="min-w-0 flex-1 truncate text-[12.5px] text-muted-foreground">
-              Réponse à : <span className="text-foreground">{replyTo.text ?? "Pièce jointe"}</span>
+              {t("conversations.composer.replyTo")}{" "}
+              <span className="text-foreground">
+                {replyTo.text ?? t("conversations.composer.attachment")}
+              </span>
             </span>
             <button
               type="button"
@@ -73,7 +78,8 @@ export function ChatComposer({
         <div className="flex items-center gap-3 rounded-md bg-surface px-3.5 py-2.5">
           <span className="flex h-2 w-2 animate-pulse rounded-full bg-danger" />
           <span className="text-[13.5px] font-medium text-foreground">
-            Enregistrement… {String(Math.floor(seconds / 60)).padStart(2, "0")}:
+            {t("conversations.composer.recording")}{" "}
+            {String(Math.floor(seconds / 60)).padStart(2, "0")}:
             {String(seconds % 60).padStart(2, "0")}
           </span>
           <div className="flex flex-1 items-center gap-[2px]">
@@ -93,24 +99,27 @@ export function ChatComposer({
             }}
             className="text-[13px] font-medium text-muted-foreground hover:text-foreground"
           >
-            Annuler
+            {t("conversations.composer.cancel")}
           </button>
           <Button
             size="sm"
             onClick={() => {
-              onSend("🎤 Note vocale");
+              onSend(t("conversations.voiceNote"));
               setRecording(false);
               setSeconds(0);
             }}
           >
             <Square className="h-3 w-3 fill-current" />
-            Envoyer
+            {t("conversations.composer.send")}
           </Button>
         </div>
       ) : (
         <div className="flex items-end gap-2">
           <div className="relative">
-            <ComposerIconButton label="Émojis" onClick={() => setEmojiOpen((v) => !v)}>
+            <ComposerIconButton
+              label={t("conversations.composer.emojis")}
+              onClick={() => setEmojiOpen((v) => !v)}
+            >
               <Smile className="h-[19px] w-[19px]" />
             </ComposerIconButton>
             {emojiOpen && (
@@ -133,7 +142,7 @@ export function ChatComposer({
             )}
           </div>
 
-          <ComposerIconButton label="Joindre un fichier">
+          <ComposerIconButton label={t("conversations.composer.attach")}>
             <Paperclip className="h-[19px] w-[19px]" />
           </ComposerIconButton>
 
@@ -148,17 +157,21 @@ export function ChatComposer({
                 e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Écrivez un message…"
+              placeholder={t("conversations.composer.placeholder")}
               className="max-h-[120px] w-full resize-none bg-transparent text-[13.5px] leading-relaxed text-foreground placeholder:text-muted-foreground focus-visible:outline-none"
             />
           </div>
 
           {value.trim() ? (
-            <Button size="icon" onClick={handleSend} aria-label="Envoyer">
+            <Button size="icon" onClick={handleSend} aria-label={t("conversations.composer.send")}>
               <Send className="h-4 w-4" />
             </Button>
           ) : (
-            <ComposerIconButton label="Note vocale" onClick={() => setRecording(true)} primary>
+            <ComposerIconButton
+              label={t("conversations.composer.voiceNote")}
+              onClick={() => setRecording(true)}
+              primary
+            >
               <Mic className="h-[19px] w-[19px]" />
             </ComposerIconButton>
           )}

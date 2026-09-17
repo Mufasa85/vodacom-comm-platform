@@ -1,54 +1,69 @@
 import { z } from "zod";
+import type { Dictionary } from "@/lib/i18n/translations";
 
-export const loginSchema = z.object({
-  email: z.string().min(1, "Enter your work email address.").email("Enter a valid email address."),
-  password: z.string().min(1, "Enter your password."),
-  remember: z.boolean().optional(),
-});
-export type LoginValues = z.infer<typeof loginSchema>;
+type ValidationMessages = Dictionary["validation"];
 
-export const otpSchema = z.object({
-  code: z
+function passwordRules(v: ValidationMessages) {
+  return z
     .string()
-    .length(6, "Enter the 6-digit code.")
-    .regex(/^\d{6}$/, "The code must contain only digits."),
-});
-export type OtpValues = z.infer<typeof otpSchema>;
+    .min(8, v.passwordMin)
+    .regex(/[A-Z]/, v.passwordUpper)
+    .regex(/[0-9]/, v.passwordNumber)
+    .regex(/[^A-Za-z0-9]/, v.passwordSymbol);
+}
 
-export const forgotPasswordSchema = z.object({
-  email: z.string().min(1, "Enter your work email address.").email("Enter a valid email address."),
-});
-export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
-
-const passwordRules = z
-  .string()
-  .min(8, "Use at least 8 characters.")
-  .regex(/[A-Z]/, "Include at least one uppercase letter.")
-  .regex(/[0-9]/, "Include at least one number.")
-  .regex(/[^A-Za-z0-9]/, "Include at least one symbol.");
-
-export const resetPasswordSchema = z
-  .object({
-    password: passwordRules,
-    confirmPassword: z.string().min(1, "Confirm your new password."),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmPassword"],
+export function createLoginSchema(v: ValidationMessages) {
+  return z.object({
+    email: z.string().min(1, v.emailRequired).email(v.emailInvalid),
+    password: z.string().min(1, v.passwordRequired),
+    remember: z.boolean().optional(),
   });
-export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
+}
+export type LoginValues = z.infer<ReturnType<typeof createLoginSchema>>;
 
-export const firstLoginSchema = z
-  .object({
-    fullName: z.string().min(2, "Enter your full name."),
-    password: passwordRules,
-    confirmPassword: z.string().min(1, "Confirm your new password."),
-    acceptTerms: z.literal(true, {
-      errorMap: () => ({ message: "Accept the terms to continue." }),
-    }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmPassword"],
+export function createOtpSchema(v: ValidationMessages) {
+  return z.object({
+    code: z
+      .string()
+      .length(6, v.otpLength)
+      .regex(/^\d{6}$/, v.otpDigits),
   });
-export type FirstLoginValues = z.infer<typeof firstLoginSchema>;
+}
+export type OtpValues = z.infer<ReturnType<typeof createOtpSchema>>;
+
+export function createForgotPasswordSchema(v: ValidationMessages) {
+  return z.object({
+    email: z.string().min(1, v.emailRequired).email(v.emailInvalid),
+  });
+}
+export type ForgotPasswordValues = z.infer<ReturnType<typeof createForgotPasswordSchema>>;
+
+export function createResetPasswordSchema(v: ValidationMessages) {
+  return z
+    .object({
+      password: passwordRules(v),
+      confirmPassword: z.string().min(1, v.confirmRequired),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: v.passwordsMismatch,
+      path: ["confirmPassword"],
+    });
+}
+export type ResetPasswordValues = z.infer<ReturnType<typeof createResetPasswordSchema>>;
+
+export function createFirstLoginSchema(v: ValidationMessages) {
+  return z
+    .object({
+      fullName: z.string().min(2, v.fullNameRequired),
+      password: passwordRules(v),
+      confirmPassword: z.string().min(1, v.confirmRequired),
+      acceptTerms: z.literal(true, {
+        errorMap: () => ({ message: v.acceptTerms }),
+      }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: v.passwordsMismatch,
+      path: ["confirmPassword"],
+    });
+}
+export type FirstLoginValues = z.infer<ReturnType<typeof createFirstLoginSchema>>;

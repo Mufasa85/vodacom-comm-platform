@@ -1,15 +1,26 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Bell, ChevronDown, Globe, Moon, Sun } from "lucide-react";
+import { Bell, ChevronDown, Moon, Sun } from "lucide-react";
 import * as React from "react";
 import { VodacomMark } from "@/components/auth/vodacom-mark";
+import { LanguageToggle } from "@/components/layout/language-toggle";
+import { useLocale } from "@/components/locale-provider";
 import { useTheme } from "@/components/theme-provider";
 
 export function Topbar() {
-  const [lang, setLang] = React.useState<"FR" | "EN">("FR");
   const [notifOpen, setNotifOpen] = React.useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLocale();
+
+  const notifications = React.useMemo(
+    () => [
+      { title: t("topbar.notif1Title"), time: t("topbar.notif1Time") },
+      { title: t("topbar.notif2Title"), time: t("topbar.notif2Time") },
+      { title: t("topbar.notif3Title"), time: t("topbar.notif3Time") },
+    ],
+    [t]
+  );
 
   return (
     <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4">
@@ -18,19 +29,12 @@ export function Topbar() {
       </div>
 
       <div className="flex items-center gap-1.5">
-        <button
-          type="button"
-          onClick={() => setLang((l) => (l === "FR" ? "EN" : "FR"))}
-          className="flex h-9 items-center gap-1.5 rounded-md px-2.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-        >
-          <Globe className="h-4 w-4" />
-          {lang}
-        </button>
+        <LanguageToggle />
 
         <button
           type="button"
           onClick={toggleTheme}
-          aria-label={theme === "dark" ? "Passer au thème clair" : "Passer au thème sombre"}
+          aria-label={theme === "dark" ? t("common.themeLight") : t("common.themeDark")}
           className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <AnimatePresence mode="wait" initial={false}>
@@ -72,13 +76,9 @@ export function Topbar() {
           {notifOpen && (
             <div className="absolute right-0 top-11 z-50 w-80 rounded-lg border border-border bg-card p-1.5 shadow-raised">
               <div className="px-2.5 py-2 text-[13px] font-semibold text-foreground">
-                Notifications
+                {t("topbar.notifications")}
               </div>
-              {[
-                { title: "Nouveau message — Assistance Mobile", time: "il y a 2 min" },
-                { title: "Bundle 5 Go activé sur votre ligne", time: "il y a 6 min" },
-                { title: "TOBi a répondu à votre demande", time: "il y a 18 min" },
-              ].map((n) => (
+              {notifications.map((n) => (
                 <button
                   type="button"
                   key={n.title}
@@ -100,7 +100,9 @@ export function Topbar() {
             MC
           </span>
           <span className="hidden text-left leading-tight sm:block">
-            <span className="block text-[13px] font-medium text-foreground">Mon compte</span>
+            <span className="block text-[13px] font-medium text-foreground">
+              {t("topbar.myAccount")}
+            </span>
             <span className="block text-[11px] text-muted-foreground">0821 234 567</span>
           </span>
           <ChevronDown className="hidden h-3.5 w-3.5 text-muted-foreground sm:block" />

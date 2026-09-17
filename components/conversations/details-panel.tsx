@@ -3,6 +3,7 @@
 import { Bell, ChevronRight, FileText, Image as ImageIcon, Search, Star, X } from "lucide-react";
 import { Avatar } from "@/components/conversations/avatar";
 import { ChannelIcon } from "@/components/conversations/channel-icon";
+import { useLocale } from "@/components/locale-provider";
 import { Separator } from "@/components/ui/separator";
 import type { Conversation } from "@/lib/types/conversation";
 
@@ -13,11 +14,15 @@ export function DetailsPanel({
   conversation: Conversation;
   onClose: () => void;
 }) {
+  const { t } = useLocale();
+
   return (
     <div className="flex h-full w-[300px] shrink-0 flex-col border-l border-border bg-card">
       <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
         <h3 className="text-[14px] font-semibold text-foreground">
-          {conversation.isChannel ? "Détails du salon" : "Détails du contact"}
+          {conversation.isChannel
+            ? t("conversations.details.channelTitle")
+            : t("conversations.details.contactTitle")}
         </h3>
         <button
           type="button"
@@ -37,18 +42,18 @@ export function DetailsPanel({
           <div className="mt-3 flex items-center gap-2">
             {conversation.isChannel && (
               <span className="rounded-full bg-muted px-2.5 py-1 text-[11.5px] font-medium text-muted-foreground">
-                Salon officiel
+                {t("conversations.details.officialChannel")}
               </span>
             )}
             {conversation.memberCount != null && (
               <span className="rounded-full bg-muted px-2.5 py-1 text-[11.5px] font-medium text-muted-foreground">
-                {conversation.memberCount} membres
+                {t("conversations.details.members", { count: conversation.memberCount })}
               </span>
             )}
             {conversation.onlineCount != null && (
               <span className="flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-[11.5px] font-medium text-success">
                 <span className="h-1.5 w-1.5 rounded-full bg-success" />
-                {conversation.onlineCount} en ligne
+                {t("conversations.details.online", { count: conversation.onlineCount })}
               </span>
             )}
           </div>
@@ -57,14 +62,20 @@ export function DetailsPanel({
         <Separator />
 
         <div className="space-y-0.5 py-3">
-          <DetailRow icon={Bell} label="Notifications" value="Toutes" />
+          <DetailRow
+            icon={Bell}
+            label={t("conversations.details.notifications")}
+            value={t("conversations.details.allNotifications")}
+          />
           <DetailRow
             icon={ImageIcon}
-            label="Médias, liens et documents"
-            value={`${conversation.sharedFiles.length} fichiers`}
+            label={t("conversations.details.media")}
+            value={t("conversations.details.filesCount", {
+              count: conversation.sharedFiles.length,
+            })}
           />
-          <DetailRow icon={Star} label="Messages importants" value="8" />
-          <DetailRow icon={Search} label="Rechercher dans la conversation" />
+          <DetailRow icon={Star} label={t("conversations.details.starred")} value="8" />
+          <DetailRow icon={Search} label={t("conversations.details.searchInChat")} />
         </div>
 
         <Separator />
@@ -72,13 +83,15 @@ export function DetailsPanel({
         <div className="py-3">
           <div className="mb-2 flex items-center justify-between">
             <p className="text-[12.5px] font-semibold text-foreground">
-              Participants ({conversation.participants.length})
+              {t("conversations.details.participants", {
+                count: conversation.participants.length,
+              })}
             </p>
             <button
               type="button"
               className="text-[12px] font-medium text-primary hover:text-primary-hover"
             >
-              Voir tous
+              {t("conversations.details.seeAll")}
             </button>
           </div>
           <div className="space-y-1">
@@ -91,7 +104,9 @@ export function DetailsPanel({
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] text-foreground">{p.name}</p>
                   <p className="text-[11px] text-muted-foreground">
-                    {p.online ? "En ligne" : "Hors ligne"}
+                    {p.online
+                      ? t("conversations.details.onlineStatus")
+                      : t("conversations.details.offlineStatus")}
                   </p>
                 </div>
                 <RoleBadge role={p.role} />
@@ -105,12 +120,14 @@ export function DetailsPanel({
             <Separator />
             <div className="py-3">
               <div className="mb-2 flex items-center justify-between">
-                <p className="text-[12.5px] font-semibold text-foreground">Fichiers partagés</p>
+                <p className="text-[12.5px] font-semibold text-foreground">
+                  {t("conversations.details.sharedFiles")}
+                </p>
                 <button
                   type="button"
                   className="text-[12px] font-medium text-primary hover:text-primary-hover"
                 >
-                  Voir tous
+                  {t("conversations.details.seeAll")}
                 </button>
               </div>
               <div className="space-y-1">
@@ -163,11 +180,15 @@ function DetailRow({
 }
 
 function RoleBadge({ role }: { role: "agent" | "supervisor" | "customer" | "bot" }) {
+  const { t } = useLocale();
   const map = {
-    agent: { label: "Agent", cls: "bg-primary/10 text-primary" },
-    supervisor: { label: "Superviseur", cls: "bg-[#7C3AED]/10 text-[#7C3AED]" },
-    customer: { label: "Client", cls: "bg-muted text-muted-foreground" },
-    bot: { label: "Bot", cls: "bg-foreground/10 text-foreground" },
+    agent: { label: t("conversations.roles.agent"), cls: "bg-primary/10 text-primary" },
+    supervisor: {
+      label: t("conversations.roles.supervisor"),
+      cls: "bg-[#7C3AED]/10 text-[#7C3AED]",
+    },
+    customer: { label: t("conversations.roles.customer"), cls: "bg-muted text-muted-foreground" },
+    bot: { label: t("conversations.roles.bot"), cls: "bg-foreground/10 text-foreground" },
   };
   const r = map[role];
   return (

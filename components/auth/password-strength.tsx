@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "@/components/locale-provider";
 import { cn } from "@/lib/utils";
 
 function getStrength(password: string) {
@@ -11,12 +12,19 @@ function getStrength(password: string) {
   return score;
 }
 
-const labels = ["Weak", "Fair", "Good", "Strong"];
 const colors = ["bg-danger", "bg-warning", "bg-[#3B82F6]", "bg-success"];
 
 export function PasswordStrength({ password }: { password: string }) {
+  const { t } = useLocale();
   const score = getStrength(password);
   const level = Math.max(0, score - 1);
+
+  const labels = [
+    t("auth.passwordStrength.weak"),
+    t("auth.passwordStrength.fair"),
+    t("auth.passwordStrength.good"),
+    t("auth.passwordStrength.strong"),
+  ];
 
   if (!password) return null;
 
@@ -34,7 +42,8 @@ export function PasswordStrength({ password }: { password: string }) {
         ))}
       </div>
       <p className="text-[12px] text-muted-foreground">
-        Password strength: <span className="font-medium text-foreground">{labels[level]}</span>
+        {t("auth.passwordStrength.label")}{" "}
+        <span className="font-medium text-foreground">{labels[level]}</span>
       </p>
     </div>
   );

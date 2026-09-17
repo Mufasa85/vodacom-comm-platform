@@ -7,12 +7,13 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { PasswordInput } from "@/components/auth/password-input";
+import { useLocale } from "@/components/locale-provider";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InsetInput } from "@/components/ui/inset-input";
 import { Label } from "@/components/ui/label";
-import { type LoginValues, loginSchema } from "@/lib/validations/auth";
+import { createLoginSchema, type LoginValues } from "@/lib/validations/auth";
 
 const fieldMotion = {
   hidden: { opacity: 0, y: 8 },
@@ -25,7 +26,10 @@ const fieldMotion = {
 
 export function LoginForm() {
   const router = useRouter();
+  const { t, validation } = useLocale();
   const [serverError, setServerError] = React.useState<string | null>(null);
+
+  const loginSchema = React.useMemo(() => createLoginSchema(validation), [validation]);
 
   const {
     register,
@@ -41,7 +45,7 @@ export function LoginForm() {
     await new Promise((r) => setTimeout(r, 900));
 
     if (values.password.length < 8) {
-      setServerError("The email or password you entered is incorrect.");
+      setServerError(t("auth.login.serverError"));
       return;
     }
     router.push("/otp");
@@ -51,11 +55,9 @@ export function LoginForm() {
     <div>
       <motion.div initial="hidden" animate="show" custom={0} variants={fieldMotion}>
         <h1 className="text-[24px] font-semibold tracking-tight text-foreground">
-          Sign in to your workspace
+          {t("auth.login.title")}
         </h1>
-        <p className="mt-1.5 text-[14px] text-muted-foreground">
-          Enter your Vodacom credentials to access the care platform.
-        </p>
+        <p className="mt-1.5 text-[14px] text-muted-foreground">{t("auth.login.subtitle")}</p>
       </motion.div>
 
       {serverError && (
@@ -80,7 +82,7 @@ export function LoginForm() {
         >
           <InsetInput
             id="email"
-            label="Work email"
+            label={t("auth.login.workEmail")}
             type="email"
             invalid={!!errors.email}
             autoComplete="email"
@@ -98,7 +100,7 @@ export function LoginForm() {
         >
           <PasswordInput
             id="password"
-            label="Password"
+            label={t("auth.login.password")}
             invalid={!!errors.password}
             autoComplete="current-password"
             {...register("password")}
@@ -118,20 +120,20 @@ export function LoginForm() {
           <span className="flex items-center gap-2">
             <Checkbox id="remember" {...register("remember")} />
             <Label htmlFor="remember" className="font-normal text-muted-foreground">
-              Keep me signed in on this device
+              {t("auth.login.remember")}
             </Label>
           </span>
           <Link
             href="/forgot-password"
             className="shrink-0 text-[13px] font-medium text-primary hover:text-primary-hover"
           >
-            Forgot password?
+            {t("auth.login.forgotPassword")}
           </Link>
         </motion.div>
 
         <motion.div initial="hidden" animate="show" custom={5} variants={fieldMotion}>
           <Button type="submit" className="w-full" size="lg" loading={isSubmitting}>
-            {isSubmitting ? "Signing in" : "Sign in"}
+            {isSubmitting ? t("auth.login.signingIn") : t("auth.login.signIn")}
           </Button>
         </motion.div>
       </form>
@@ -143,12 +145,12 @@ export function LoginForm() {
         variants={fieldMotion}
         className="mt-8 text-center text-[13px] text-muted-foreground"
       >
-        Trouble accessing your account?{" "}
+        {t("auth.login.trouble")}{" "}
         <a
           href="mailto:it-support@vodacom.com"
           className="font-medium text-primary hover:text-primary-hover"
         >
-          Contact IT support
+          {t("auth.login.contactIt")}
         </a>
       </motion.p>
     </div>

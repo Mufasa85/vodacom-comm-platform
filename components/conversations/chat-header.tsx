@@ -3,6 +3,7 @@
 import { Search, X } from "lucide-react";
 import * as React from "react";
 import { ChannelIcon } from "@/components/conversations/channel-icon";
+import { useLocale } from "@/components/locale-provider";
 import type { Conversation } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,7 @@ export function ChatHeader({
   conversation: Conversation;
   onSearchChange: (query: string) => void;
 }) {
+  const { t } = useLocale();
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
 
@@ -21,16 +23,21 @@ export function ChatHeader({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, searchOpen]);
 
+  const subtitle = conversation.isChannel
+    ? t("conversations.header.channelMembers", { count: conversation.memberCount ?? 0 })
+    : t("conversations.header.direct");
+  const onlineSuffix = conversation.onlineCount
+    ? t("conversations.header.online", { count: conversation.onlineCount })
+    : "";
+
   return (
     <div className="flex h-16 shrink-0 items-center gap-3 border-b border-border bg-card px-5">
       <ChannelIcon icon={conversation.icon} accent={conversation.accent} />
       <div className="min-w-0 flex-1">
         <h2 className="truncate text-[15px] font-semibold text-foreground">{conversation.name}</h2>
         <p className="truncate text-[12.5px] text-muted-foreground">
-          {conversation.isChannel
-            ? `Salon · ${conversation.memberCount ?? 0} membres`
-            : "Conversation directe"}
-          {conversation.onlineCount ? ` · ${conversation.onlineCount} en ligne` : ""}
+          {subtitle}
+          {onlineSuffix}
         </p>
       </div>
 
@@ -41,12 +48,12 @@ export function ChatHeader({
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Rechercher dans la conversation…"
+              placeholder={t("conversations.header.searchPlaceholder")}
               className="h-9 w-full rounded-md border border-input bg-surface pl-8 pr-3 text-[13px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
           </div>
           <HeaderIconButton
-            label="Fermer la recherche"
+            label={t("conversations.header.closeSearch")}
             onClick={() => {
               setSearchOpen(false);
               setQuery("");
@@ -56,7 +63,10 @@ export function ChatHeader({
           </HeaderIconButton>
         </div>
       ) : (
-        <HeaderIconButton label="Rechercher" onClick={() => setSearchOpen(true)}>
+        <HeaderIconButton
+          label={t("conversations.header.search")}
+          onClick={() => setSearchOpen(true)}
+        >
           <Search className="h-[17px] w-[17px]" />
         </HeaderIconButton>
       )}

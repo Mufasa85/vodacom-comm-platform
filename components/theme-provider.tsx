@@ -62,5 +62,6 @@ export function ThemeScript() {
   } catch (e) {}
 })();
 `;
+  // biome-ignore lint/security/noDangerouslySetInnerHtml: static theme bootstrap script with no user input
   return <script dangerouslySetInnerHTML={{ __html: script }} />;
 }

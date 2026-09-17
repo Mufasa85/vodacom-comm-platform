@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { Avatar } from "@/components/conversations/avatar";
+import { useLocale } from "@/components/locale-provider";
 import type { Message, Participant } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
 
@@ -44,6 +45,7 @@ export function MessageBubble({
   highlighted?: boolean;
   onReact: (emoji: string) => void;
 }) {
+  const { t } = useLocale();
   const [toolbarOpen, setToolbarOpen] = React.useState(false);
 
   if (message.kind === "system") {
@@ -144,7 +146,7 @@ export function MessageBubble({
             {message.kind === "image" && (
               <div className="w-56 overflow-hidden rounded-md bg-foreground/5">
                 <div className="flex h-36 items-center justify-center text-[12px] text-muted-foreground">
-                  Aperçu image
+                  {t("conversations.message.imagePreview")}
                 </div>
               </div>
             )}
@@ -227,6 +229,7 @@ function MessageToolbar({
   onReact: (emoji: string) => void;
   align: "left" | "right";
 }) {
+  const { t } = useLocale();
   const [pickerOpen, setPickerOpen] = React.useState(false);
 
   return (
@@ -236,11 +239,14 @@ function MessageToolbar({
         align === "left" ? "order-first" : "order-last"
       )}
     >
-      <ToolbarButton label="Répondre">
+      <ToolbarButton label={t("conversations.message.reply")}>
         <Reply className="h-3.5 w-3.5" />
       </ToolbarButton>
       <div className="relative">
-        <ToolbarButton label="Réagir" onClick={() => setPickerOpen((v) => !v)}>
+        <ToolbarButton
+          label={t("conversations.message.react")}
+          onClick={() => setPickerOpen((v) => !v)}
+        >
           <Smile className="h-3.5 w-3.5" />
         </ToolbarButton>
         {pickerOpen && (
@@ -261,16 +267,16 @@ function MessageToolbar({
           </div>
         )}
       </div>
-      <ToolbarButton label="Transférer">
+      <ToolbarButton label={t("conversations.message.forward")}>
         <Forward className="h-3.5 w-3.5" />
       </ToolbarButton>
-      <ToolbarButton label="Copier">
+      <ToolbarButton label={t("conversations.message.copy")}>
         <Copy className="h-3.5 w-3.5" />
       </ToolbarButton>
-      <ToolbarButton label="Épingler">
+      <ToolbarButton label={t("conversations.message.pin")}>
         <Pin className="h-3.5 w-3.5" />
       </ToolbarButton>
-      <ToolbarButton label="Plus">
+      <ToolbarButton label={t("conversations.message.more")}>
         <MoreHorizontal className="h-3.5 w-3.5" />
       </ToolbarButton>
     </div>

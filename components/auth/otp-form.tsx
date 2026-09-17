@@ -7,16 +7,20 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { OtpInput } from "@/components/auth/otp-input";
+import { useLocale } from "@/components/locale-provider";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { type OtpValues, otpSchema } from "@/lib/validations/auth";
+import { createOtpSchema, type OtpValues } from "@/lib/validations/auth";
 
 const RESEND_SECONDS = 30;
 
 export function OtpForm() {
   const router = useRouter();
+  const { t, validation } = useLocale();
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [secondsLeft, setSecondsLeft] = React.useState(RESEND_SECONDS);
+
+  const otpSchema = React.useMemo(() => createOtpSchema(validation), [validation]);
 
   const {
     control,
@@ -29,8 +33,8 @@ export function OtpForm() {
 
   React.useEffect(() => {
     if (secondsLeft <= 0) return;
-    const t = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => clearTimeout(timer);
   }, [secondsLeft]);
 
   async function onSubmit(values: OtpValues) {
@@ -38,9 +42,8 @@ export function OtpForm() {
     await new Promise((r) => setTimeout(r, 900));
 
     if (values.code !== "000000" && values.code.length === 6) {
-      // any 6-digit code is accepted in this scaffold except a deliberate failure case
       if (values.code === "111111") {
-        setServerError("That code is incorrect or has expired.");
+        setServerError(t("auth.otp.serverError"));
         return;
       }
     }
@@ -58,15 +61,13 @@ export function OtpForm() {
         className="inline-flex items-center gap-1.5 text-[13px] font-medium text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-3.5 w-3.5" />
-        Back to sign in
+        {t("auth.backToSignIn")}
       </Link>
 
       <h1 className="mt-5 text-[24px] font-semibold tracking-tight text-foreground">
-        Verify your identity
+        {t("auth.otp.title")}
       </h1>
-      <p className="mt-1.5 text-[14px] text-muted-foreground">
-        Enter the 6-digit code we sent to your registered email address.
-      </p>
+      <p className="mt-1.5 text-[14px] text-muted-foreground">{t("auth.otp.subtitle")}</p>
 
       {serverError && (
         <div className="mt-6">
@@ -92,20 +93,20 @@ export function OtpForm() {
         />
 
         <Button type="submit" className="w-full" size="lg" loading={isSubmitting}>
-          {isSubmitting ? "Verifying" : "Verify code"}
+          {isSubmitting ? t("auth.otp.verifying") : t("auth.otp.verify")}
         </Button>
       </form>
 
       <div className="mt-6 text-center text-[13px] text-muted-foreground">
         {secondsLeft > 0 ? (
-          <span>Resend code in {secondsLeft}s</span>
+          <span>{t("auth.otp.resendIn", { seconds: secondsLeft })}</span>
         ) : (
           <button
             type="button"
             onClick={handleResend}
             className="font-medium text-primary hover:text-primary-hover"
           >
-            Resend code
+            {t("auth.otp.resend")}
           </button>
         )}
       </div>

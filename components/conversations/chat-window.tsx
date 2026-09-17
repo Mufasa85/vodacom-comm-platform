@@ -6,10 +6,13 @@ import { ChatComposer } from "@/components/conversations/chat-composer";
 import { ChatHeader } from "@/components/conversations/chat-header";
 import { MessageBubble } from "@/components/conversations/message-bubble";
 import { TypingIndicator } from "@/components/conversations/typing-indicator";
+import { useLocale } from "@/components/locale-provider";
 import { currentUser } from "@/lib/data/conversations";
+import { localeToBcp47 } from "@/lib/i18n/translations";
 import type { Conversation, Message } from "@/lib/types/conversation";
 
 export function ChatWindow({ conversation }: { conversation: Conversation | null }) {
+  const { t, locale } = useLocale();
   const [messages, setMessages] = React.useState<Message[]>(conversation?.messages ?? []);
   const [typing, setTyping] = React.useState(false);
   const [replyTo, setReplyTo] = React.useState<Message | null>(null);
@@ -35,11 +38,9 @@ export function ChatWindow({ conversation }: { conversation: Conversation | null
         </span>
         <div>
           <p className="text-[14px] font-medium text-foreground">
-            Aucune conversation sélectionnée
+            {t("conversations.noSelectionTitle")}
           </p>
-          <p className="text-[13px] text-muted-foreground">
-            Choisissez un salon ou une conversation à gauche.
-          </p>
+          <p className="text-[13px] text-muted-foreground">{t("conversations.noSelectionBody")}</p>
         </div>
       </div>
     );
@@ -55,7 +56,10 @@ export function ChatWindow({ conversation }: { conversation: Conversation | null
       senderId: "me",
       kind: "text",
       text,
-      time: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
+      time: new Date().toLocaleTimeString(localeToBcp47(locale), {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       status: "sent",
       replyToId: replyTo?.id,
     };
@@ -79,8 +83,11 @@ export function ChatWindow({ conversation }: { conversation: Conversation | null
             id: `reply-${Date.now()}`,
             senderId: responder.id,
             kind: "text",
-            text: "Bien reçu, je m'en occupe tout de suite.",
-            time: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
+            text: t("conversations.autoReply"),
+            time: new Date().toLocaleTimeString(localeToBcp47(locale), {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
           },
         ]);
       }, 1800);
@@ -108,7 +115,8 @@ export function ChatWindow({ conversation }: { conversation: Conversation | null
         <div className="flex items-center gap-2 border-b border-border bg-warning/[0.06] px-5 py-2">
           <Pin className="h-3.5 w-3.5 shrink-0 text-warning" />
           <span className="truncate text-[12.5px] text-foreground/80">
-            <span className="font-medium">Message épinglé :</span> {pinnedMessage.text}
+            <span className="font-medium">{t("conversations.pinnedPrefix")}</span>{" "}
+            {pinnedMessage.text}
           </span>
         </div>
       )}
@@ -121,7 +129,7 @@ export function ChatWindow({ conversation }: { conversation: Conversation | null
         <div ref={scrollRef} className="relative h-full overflow-y-auto py-4">
           {messages.length === 0 ? (
             <div className="flex h-full items-center justify-center text-[13px] text-muted-foreground">
-              Aucun message pour le moment. Démarrez la conversation ci-dessous.
+              {t("conversations.noMessages")}
             </div>
           ) : (
             messages.map((message, i) => {

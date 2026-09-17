@@ -12,19 +12,21 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useLocale } from "@/components/locale-provider";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { href: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
-  { href: "/conversations", label: "Discussions", icon: MessageSquare, badge: 12 },
-  { href: "/customers", label: "Clients", icon: Users2 },
-  { href: "/calls", label: "Appels", icon: Phone },
-  { href: "/knowledge-base", label: "Base de connaissances", icon: BookOpen },
-  { href: "/reports", label: "Rapports", icon: BarChart3 },
-];
 
 export function IconRail() {
   const pathname = usePathname();
+  const { t } = useLocale();
+
+  const navItems = [
+    { href: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
+    { href: "/conversations", label: t("nav.conversations"), icon: MessageSquare, badge: 12 },
+    { href: "/customers", label: t("nav.customers"), icon: Users2 },
+    { href: "/calls", label: t("nav.calls"), icon: Phone },
+    { href: "/knowledge-base", label: t("nav.knowledgeBase"), icon: BookOpen },
+    { href: "/reports", label: t("nav.reports"), icon: BarChart3 },
+  ];
 
   return (
     <nav className="flex h-full w-[72px] shrink-0 flex-col items-center border-r border-border bg-card py-4">
