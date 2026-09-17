@@ -1,11 +1,10 @@
 "use client";
 
-import { X, Bell, Image as ImageIcon, Star, Search, ChevronRight, FileText } from "lucide-react";
-
-import type { Conversation } from "@/lib/types/conversation";
-import { ChannelIcon } from "@/components/conversations/channel-icon";
+import { Bell, ChevronRight, FileText, Image as ImageIcon, Search, Star, X } from "lucide-react";
 import { Avatar } from "@/components/conversations/avatar";
+import { ChannelIcon } from "@/components/conversations/channel-icon";
 import { Separator } from "@/components/ui/separator";
+import type { Conversation } from "@/lib/types/conversation";
 
 export function DetailsPanel({
   conversation,
@@ -21,6 +20,7 @@ export function DetailsPanel({
           {conversation.isChannel ? "Détails du salon" : "Détails du contact"}
         </h3>
         <button
+          type="button"
           onClick={onClose}
           className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
         >
@@ -58,7 +58,11 @@ export function DetailsPanel({
 
         <div className="space-y-0.5 py-3">
           <DetailRow icon={Bell} label="Notifications" value="Toutes" />
-          <DetailRow icon={ImageIcon} label="Médias, liens et documents" value={`${conversation.sharedFiles.length} fichiers`} />
+          <DetailRow
+            icon={ImageIcon}
+            label="Médias, liens et documents"
+            value={`${conversation.sharedFiles.length} fichiers`}
+          />
           <DetailRow icon={Star} label="Messages importants" value="8" />
           <DetailRow icon={Search} label="Rechercher dans la conversation" />
         </div>
@@ -70,13 +74,19 @@ export function DetailsPanel({
             <p className="text-[12.5px] font-semibold text-foreground">
               Participants ({conversation.participants.length})
             </p>
-            <button className="text-[12px] font-medium text-primary hover:text-primary-hover">
+            <button
+              type="button"
+              className="text-[12px] font-medium text-primary hover:text-primary-hover"
+            >
               Voir tous
             </button>
           </div>
           <div className="space-y-1">
             {conversation.participants.slice(0, 5).map((p) => (
-              <div key={p.id} className="flex items-center gap-2.5 rounded-md px-1.5 py-1.5 hover:bg-muted">
+              <div
+                key={p.id}
+                className="flex items-center gap-2.5 rounded-md px-1.5 py-1.5 hover:bg-muted"
+              >
                 <Avatar name={p.name} color={p.avatarColor} online={p.online} size="sm" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] text-foreground">{p.name}</p>
@@ -96,13 +106,17 @@ export function DetailsPanel({
             <div className="py-3">
               <div className="mb-2 flex items-center justify-between">
                 <p className="text-[12.5px] font-semibold text-foreground">Fichiers partagés</p>
-                <button className="text-[12px] font-medium text-primary hover:text-primary-hover">
+                <button
+                  type="button"
+                  className="text-[12px] font-medium text-primary hover:text-primary-hover"
+                >
                   Voir tous
                 </button>
               </div>
               <div className="space-y-1">
                 {conversation.sharedFiles.map((f) => (
                   <button
+                    type="button"
                     key={f.name}
                     className="flex w-full items-center gap-2.5 rounded-md px-1.5 py-1.5 text-left hover:bg-muted"
                   >
@@ -136,7 +150,10 @@ function DetailRow({
   value?: string;
 }) {
   return (
-    <button className="flex w-full items-center gap-3 rounded-md px-1.5 py-2 text-left hover:bg-muted">
+    <button
+      type="button"
+      className="flex w-full items-center gap-3 rounded-md px-1.5 py-2 text-left hover:bg-muted"
+    >
       <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
       <span className="flex-1 text-[13px] text-foreground">{label}</span>
       {value && <span className="text-[12px] text-muted-foreground">{value}</span>}
@@ -154,8 +171,6 @@ function RoleBadge({ role }: { role: "agent" | "supervisor" | "customer" | "bot"
   };
   const r = map[role];
   return (
-    <span className={`rounded-full px-2 py-0.5 text-[10.5px] font-medium ${r.cls}`}>
-      {r.label}
-    </span>
+    <span className={`rounded-full px-2 py-0.5 text-[10.5px] font-medium ${r.cls}`}>{r.label}</span>
   );
 }

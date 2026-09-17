@@ -1,20 +1,15 @@
 "use client";
 
+import { MessageSquareOff, Pin } from "lucide-react";
 import * as React from "react";
-import { Pin, MessageSquareOff } from "lucide-react";
-
-import type { Conversation, Message } from "@/lib/types/conversation";
-import { currentUser } from "@/lib/data/conversations";
+import { ChatComposer } from "@/components/conversations/chat-composer";
 import { ChatHeader } from "@/components/conversations/chat-header";
 import { MessageBubble } from "@/components/conversations/message-bubble";
 import { TypingIndicator } from "@/components/conversations/typing-indicator";
-import { ChatComposer } from "@/components/conversations/chat-composer";
+import { currentUser } from "@/lib/data/conversations";
+import type { Conversation, Message } from "@/lib/types/conversation";
 
-export function ChatWindow({
-  conversation,
-}: {
-  conversation: Conversation | null;
-}) {
+export function ChatWindow({ conversation }: { conversation: Conversation | null }) {
   const [messages, setMessages] = React.useState<Message[]>(conversation?.messages ?? []);
   const [typing, setTyping] = React.useState(false);
   const [replyTo, setReplyTo] = React.useState<Message | null>(null);
@@ -39,8 +34,12 @@ export function ChatWindow({
           <MessageSquareOff className="h-6 w-6 text-muted-foreground" />
         </span>
         <div>
-          <p className="text-[14px] font-medium text-foreground">Aucune conversation sélectionnée</p>
-          <p className="text-[13px] text-muted-foreground">Choisissez un salon ou une conversation à gauche.</p>
+          <p className="text-[14px] font-medium text-foreground">
+            Aucune conversation sélectionnée
+          </p>
+          <p className="text-[13px] text-muted-foreground">
+            Choisissez un salon ou une conversation à gauche.
+          </p>
         </div>
       </div>
     );
@@ -94,7 +93,7 @@ export function ChatWindow({
         if (m.id !== messageId) return m;
         const existing = m.reactions?.find((r) => r.emoji === emoji);
         const reactions = existing
-          ? m.reactions!.map((r) => (r.emoji === emoji ? { ...r, count: r.count + 1 } : r))
+          ? m.reactions?.map((r) => (r.emoji === emoji ? { ...r, count: r.count + 1 } : r))
           : [...(m.reactions ?? []), { emoji, count: 1 }];
         return { ...m, reactions };
       })
@@ -127,10 +126,16 @@ export function ChatWindow({
           ) : (
             messages.map((message, i) => {
               const prev = messages[i - 1];
-              const showMeta = !prev || prev.senderId !== message.senderId || prev.kind === "system";
+              const showMeta =
+                !prev || prev.senderId !== message.senderId || prev.kind === "system";
               const sender =
                 message.senderId === "me"
-                  ? { id: "me", name: currentUser.name, role: currentUser.role, avatarColor: "#111111" }
+                  ? {
+                      id: "me",
+                      name: currentUser.name,
+                      role: currentUser.role,
+                      avatarColor: "#111111",
+                    }
                   : participantMap.get(message.senderId);
               const matchesSearch =
                 !searchQuery ||
@@ -152,7 +157,9 @@ export function ChatWindow({
 
           {typing && (
             <TypingIndicator
-              name={participants.find((p) => p.role === "agent" || p.role === "bot")?.name ?? "TOBi AI"}
+              name={
+                participants.find((p) => p.role === "agent" || p.role === "bot")?.name ?? "TOBi AI"
+              }
               color={participants.find((p) => p.role === "agent" || p.role === "bot")?.avatarColor}
             />
           )}

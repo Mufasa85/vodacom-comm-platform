@@ -2,8 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export interface InsetInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InsetInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   invalid?: boolean;
   /** Élément affiché à droite dans le champ (ex. bouton afficher/masquer). */

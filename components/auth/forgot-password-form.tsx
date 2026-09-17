@@ -1,18 +1,14 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, MailCheck } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { ArrowLeft, MailCheck } from "lucide-react";
-
+import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { InsetInput } from "@/components/ui/inset-input";
-import { Alert } from "@/components/ui/alert";
-import {
-  forgotPasswordSchema,
-  type ForgotPasswordValues,
-} from "@/lib/validations/auth";
+import { type ForgotPasswordValues, forgotPasswordSchema } from "@/lib/validations/auth";
 
 export function ForgotPasswordForm() {
   const [sentTo, setSentTo] = React.useState<string | null>(null);
@@ -44,8 +40,8 @@ export function ForgotPasswordForm() {
         </h1>
         <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
           We&apos;ve sent password reset instructions to{" "}
-          <span className="font-medium text-foreground">{sentTo}</span>. The
-          link expires in 30 minutes.
+          <span className="font-medium text-foreground">{sentTo}</span>. The link expires in 30
+          minutes.
         </p>
         <Button asChild variant="outline" className="mt-7 w-full" size="lg">
           <Link href="/login">Back to sign in</Link>
@@ -78,8 +74,7 @@ export function ForgotPasswordForm() {
         Reset your password
       </h1>
       <p className="mt-1.5 text-[14px] text-muted-foreground">
-        Enter your work email and we&apos;ll send you instructions to reset
-        your password.
+        Enter your work email and we&apos;ll send you instructions to reset your password.
       </p>
 
       {serverError && (
@@ -98,9 +93,7 @@ export function ForgotPasswordForm() {
             autoComplete="email"
             {...register("email")}
           />
-          {errors.email && (
-            <p className="text-[12.5px] text-danger">{errors.email.message}</p>
-          )}
+          {errors.email && <p className="text-[12.5px] text-danger">{errors.email.message}</p>}
         </div>
 
         <Button type="submit" className="w-full" size="lg" loading={isSubmitting}>

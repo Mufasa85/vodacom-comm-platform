@@ -1,11 +1,21 @@
 "use client";
 
-import * as React from "react";
 import { motion } from "framer-motion";
-import { Check, CheckCheck, FileText, Play, Reply, Forward, Copy, Pin, Trash2, MoreHorizontal, Smile } from "lucide-react";
-
-import type { Message, Participant } from "@/lib/types/conversation";
+import {
+  Check,
+  CheckCheck,
+  Copy,
+  FileText,
+  Forward,
+  MoreHorizontal,
+  Pin,
+  Play,
+  Reply,
+  Smile,
+} from "lucide-react";
+import * as React from "react";
 import { Avatar } from "@/components/conversations/avatar";
+import type { Message, Participant } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
 
 const quickReactions = ["👍", "❤️", "😂", "🎉"];
@@ -75,9 +85,7 @@ export function MessageBubble({
         )}
 
         <div className="relative flex items-center gap-1.5">
-          {isMine && toolbarOpen && (
-            <MessageToolbar onReact={onReact} align="left" />
-          )}
+          {isMine && toolbarOpen && <MessageToolbar onReact={onReact} align="left" />}
 
           <div
             className={cn(
@@ -94,6 +102,7 @@ export function MessageBubble({
               <div className="flex min-w-[220px] flex-col gap-1.5">
                 {message.options.map((opt) => (
                   <button
+                    type="button"
                     key={opt}
                     className={cn(
                       "rounded-md border px-3 py-2 text-left text-[13px] font-medium transition-colors",
@@ -120,7 +129,12 @@ export function MessageBubble({
                 </span>
                 <div className="min-w-0">
                   <p className="truncate text-[13px] font-medium">{message.attachment.name}</p>
-                  <p className={cn("text-[11.5px]", isMine ? "text-white/70" : "text-muted-foreground")}>
+                  <p
+                    className={cn(
+                      "text-[11.5px]",
+                      isMine ? "text-white/70" : "text-muted-foreground"
+                    )}
+                  >
                     {message.attachment.size}
                   </p>
                 </div>
@@ -138,6 +152,7 @@ export function MessageBubble({
             {message.kind === "voice" && (
               <div className="flex min-w-[200px] items-center gap-3">
                 <button
+                  type="button"
                   className={cn(
                     "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
                     isMine ? "bg-white/20" : "bg-primary/10 text-primary"
@@ -146,18 +161,23 @@ export function MessageBubble({
                   <Play className="h-3.5 w-3.5 fill-current" />
                 </button>
                 <div className="flex h-6 flex-1 items-center gap-[2px]">
-                  {Array.from({ length: 24 }).map((_, i) => (
+                  {Array.from({ length: 24 }, (_, bar) => bar).map((bar) => (
                     <span
-                      key={i}
+                      key={bar}
                       className={cn(
                         "w-[2.5px] rounded-full",
                         isMine ? "bg-white/50" : "bg-primary/40"
                       )}
-                      style={{ height: `${8 + ((i * 7) % 16)}px` }}
+                      style={{ height: `${8 + ((bar * 7) % 16)}px` }}
                     />
                   ))}
                 </div>
-                <span className={cn("text-[11.5px]", isMine ? "text-white/80" : "text-muted-foreground")}>
+                <span
+                  className={cn(
+                    "text-[11.5px]",
+                    isMine ? "text-white/80" : "text-muted-foreground"
+                  )}
+                >
                   {message.voiceDuration ?? "0:12"}
                 </span>
               </div>
@@ -174,9 +194,7 @@ export function MessageBubble({
             </div>
           </div>
 
-          {!isMine && toolbarOpen && (
-            <MessageToolbar onReact={onReact} align="right" />
-          )}
+          {!isMine && toolbarOpen && <MessageToolbar onReact={onReact} align="right" />}
         </div>
 
         {message.reactions && message.reactions.length > 0 && (
@@ -199,9 +217,7 @@ export function MessageBubble({
 function MessageStatusTicks({ status }: { status?: Message["status"] }) {
   if (!status || status === "sending") return null;
   if (status === "sent") return <Check className="h-3.5 w-3.5" />;
-  return (
-    <CheckCheck className={cn("h-3.5 w-3.5", status === "seen" && "text-[#93C5FD]")} />
-  );
+  return <CheckCheck className={cn("h-3.5 w-3.5", status === "seen" && "text-[#93C5FD]")} />;
 }
 
 function MessageToolbar({
@@ -231,6 +247,7 @@ function MessageToolbar({
           <div className="absolute bottom-9 left-1/2 z-10 flex -translate-x-1/2 gap-1 rounded-md border border-border bg-card p-1 shadow-raised">
             {quickReactions.map((emoji) => (
               <button
+                type="button"
                 key={emoji}
                 onClick={() => {
                   onReact(emoji);
@@ -271,6 +288,7 @@ function ToolbarButton({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-label={label}
       className="flex h-7 w-7 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

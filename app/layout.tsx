@@ -15,11 +15,7 @@ export const metadata: Metadata = {
     "Enterprise customer communication platform for support, live assistance, and AI-powered conversations.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>

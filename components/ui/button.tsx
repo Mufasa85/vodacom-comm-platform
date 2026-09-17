@@ -1,7 +1,7 @@
-import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -10,10 +10,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm",
-        outline:
-          "border border-border bg-transparent text-foreground hover:bg-muted",
+        default: "bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm",
+        outline: "border border-border bg-transparent text-foreground hover:bg-muted",
         ghost: "text-foreground hover:bg-muted",
         link: "text-primary underline-offset-4 hover:underline p-0 h-auto",
       },
@@ -39,10 +37,7 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { className, variant, size, asChild = false, loading, children, disabled, ...props },
-    ref
-  ) => {
+  ({ className, variant, size, asChild = false, loading, children, disabled, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
       <Comp

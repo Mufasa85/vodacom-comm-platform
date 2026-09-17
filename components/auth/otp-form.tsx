@@ -1,17 +1,15 @@
 "use client";
 
-import * as React from "react";
-import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Alert } from "@/components/ui/alert";
+import * as React from "react";
+import { Controller, useForm } from "react-hook-form";
 import { OtpInput } from "@/components/auth/otp-input";
-import { otpSchema, type OtpValues } from "@/lib/validations/auth";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { type OtpValues, otpSchema } from "@/lib/validations/auth";
 
 const RESEND_SECONDS = 30;
 
@@ -88,9 +86,7 @@ export function OtpForm() {
                 invalid={!!errors.code}
                 disabled={isSubmitting}
               />
-              {errors.code && (
-                <p className="text-[12.5px] text-danger">{errors.code.message}</p>
-              )}
+              {errors.code && <p className="text-[12.5px] text-danger">{errors.code.message}</p>}
             </div>
           )}
         />

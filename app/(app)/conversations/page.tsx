@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-
-import { conversations } from "@/lib/data/conversations";
-import { ConversationList } from "@/components/conversations/conversation-list";
 import { ChatWindow } from "@/components/conversations/chat-window";
+import { ConversationList } from "@/components/conversations/conversation-list";
+import { conversations } from "@/lib/data/conversations";
 
 export default function ConversationsPage() {
   const [activeId, setActiveId] = React.useState(conversations[2].id);

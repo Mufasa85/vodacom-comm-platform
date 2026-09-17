@@ -1,11 +1,10 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
+import { Mic, Paperclip, Reply, Send, Smile, Square, X } from "lucide-react";
 import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Paperclip, Smile, Mic, Send, X, Square, Reply } from "lucide-react";
-
-import type { Message } from "@/lib/types/conversation";
 import { Button } from "@/components/ui/button";
+import type { Message } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
 
 const emojiSet = ["😀", "😉", "😂", "👍", "🙏", "🎉", "❤️", "😢", "😮", "🤝", "✅", "⚠️"];
@@ -60,6 +59,7 @@ export function ChatComposer({
               Réponse à : <span className="text-foreground">{replyTo.text ?? "Pièce jointe"}</span>
             </span>
             <button
+              type="button"
               onClick={onCancelReply}
               className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-muted-foreground hover:bg-card hover:text-foreground"
             >
@@ -77,15 +77,16 @@ export function ChatComposer({
             {String(seconds % 60).padStart(2, "0")}
           </span>
           <div className="flex flex-1 items-center gap-[2px]">
-            {Array.from({ length: 40 }).map((_, i) => (
+            {Array.from({ length: 40 }, (_, bar) => bar).map((bar) => (
               <span
-                key={i}
+                key={bar}
                 className="w-[2px] rounded-full bg-primary/50"
-                style={{ height: `${4 + ((i * 13) % 14)}px` }}
+                style={{ height: `${4 + ((bar * 13) % 14)}px` }}
               />
             ))}
           </div>
           <button
+            type="button"
             onClick={() => {
               setRecording(false);
               setSeconds(0);
@@ -116,6 +117,7 @@ export function ChatComposer({
               <div className="absolute bottom-11 left-0 z-20 grid w-56 grid-cols-6 gap-1 rounded-lg border border-border bg-card p-2 shadow-raised">
                 {emojiSet.map((e) => (
                   <button
+                    type="button"
                     key={e}
                     onClick={() => {
                       setValue((v) => v + e);
@@ -179,6 +181,7 @@ function ComposerIconButton({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-label={label}
       className={cn(

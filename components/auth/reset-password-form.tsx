@@ -1,19 +1,15 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { CheckCircle2 } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Alert } from "@/components/ui/alert";
 import { PasswordInput } from "@/components/auth/password-input";
 import { PasswordStrength } from "@/components/auth/password-strength";
-import {
-  resetPasswordSchema,
-  type ResetPasswordValues,
-} from "@/lib/validations/auth";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { type ResetPasswordValues, resetPasswordSchema } from "@/lib/validations/auth";
 
 const requirements = [
   { test: (p: string) => p.length >= 8, label: "At least 8 characters" },
@@ -38,7 +34,7 @@ export function ResetPasswordForm() {
 
   const password = watch("password");
 
-  async function onSubmit(values: ResetPasswordValues) {
+  async function onSubmit(_values: ResetPasswordValues) {
     setServerError(null);
     await new Promise((r) => setTimeout(r, 900));
     router.push("/login");
@@ -50,8 +46,7 @@ export function ResetPasswordForm() {
         Create a new password
       </h1>
       <p className="mt-1.5 text-[14px] text-muted-foreground">
-        Choose a strong password you haven&apos;t used before on this
-        account.
+        Choose a strong password you haven&apos;t used before on this account.
       </p>
 
       {serverError && (
@@ -84,9 +79,7 @@ export function ResetPasswordForm() {
             {...register("confirmPassword")}
           />
           {errors.confirmPassword && (
-            <p className="text-[12.5px] text-danger">
-              {errors.confirmPassword.message}
-            </p>
+            <p className="text-[12.5px] text-danger">{errors.confirmPassword.message}</p>
           )}
         </div>
 
@@ -100,9 +93,7 @@ export function ResetPasswordForm() {
                   met ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
-                <CheckCircle2
-                  className={`h-3.5 w-3.5 ${met ? "text-success" : "text-border"}`}
-                />
+                <CheckCircle2 className={`h-3.5 w-3.5 ${met ? "text-success" : "text-border"}`} />
                 {req.label}
               </li>
             );

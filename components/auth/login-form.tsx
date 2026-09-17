@@ -1,19 +1,18 @@
 "use client";
 
-import * as React from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { PasswordInput } from "@/components/auth/password-input";
+import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { InsetInput } from "@/components/ui/inset-input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Alert } from "@/components/ui/alert";
-import { PasswordInput } from "@/components/auth/password-input";
-import { loginSchema, type LoginValues } from "@/lib/validations/auth";
+import { type LoginValues, loginSchema } from "@/lib/validations/auth";
 
 const fieldMotion = {
   hidden: { opacity: 0, y: 8 },
@@ -50,12 +49,7 @@ export function LoginForm() {
 
   return (
     <div>
-      <motion.div
-        initial="hidden"
-        animate="show"
-        custom={0}
-        variants={fieldMotion}
-      >
+      <motion.div initial="hidden" animate="show" custom={0} variants={fieldMotion}>
         <h1 className="text-[24px] font-semibold tracking-tight text-foreground">
           Sign in to your workspace
         </h1>
@@ -65,13 +59,25 @@ export function LoginForm() {
       </motion.div>
 
       {serverError && (
-        <motion.div initial="hidden" animate="show" custom={1} variants={fieldMotion} className="mt-6">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          custom={1}
+          variants={fieldMotion}
+          className="mt-6"
+        >
           <Alert variant="danger">{serverError}</Alert>
         </motion.div>
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-7 space-y-5" noValidate>
-        <motion.div initial="hidden" animate="show" custom={2} variants={fieldMotion} className="space-y-1.5">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          custom={2}
+          variants={fieldMotion}
+          className="space-y-1.5"
+        >
           <InsetInput
             id="email"
             label="Work email"
@@ -80,12 +86,16 @@ export function LoginForm() {
             autoComplete="email"
             {...register("email")}
           />
-          {errors.email && (
-            <p className="text-[12.5px] text-danger">{errors.email.message}</p>
-          )}
+          {errors.email && <p className="text-[12.5px] text-danger">{errors.email.message}</p>}
         </motion.div>
 
-        <motion.div initial="hidden" animate="show" custom={3} variants={fieldMotion} className="space-y-1.5">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          custom={3}
+          variants={fieldMotion}
+          className="space-y-1.5"
+        >
           <PasswordInput
             id="password"
             label="Password"
@@ -134,7 +144,10 @@ export function LoginForm() {
         className="mt-8 text-center text-[13px] text-muted-foreground"
       >
         Trouble accessing your account?{" "}
-        <a href="#" className="font-medium text-primary hover:text-primary-hover">
+        <a
+          href="mailto:it-support@vodacom.com"
+          className="font-medium text-primary hover:text-primary-hover"
+        >
           Contact IT support
         </a>
       </motion.p>

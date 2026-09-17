@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { CalendarDays, Search } from "lucide-react";
-
-import type { Conversation } from "@/lib/types/conversation";
+import * as React from "react";
 import { ConversationListItem } from "@/components/conversations/conversation-list-item";
+import type { Conversation } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
 
 const filters = ["Tous", "Non lus", "Favoris", "Conseillers"] as const;
@@ -26,11 +25,7 @@ function startOfDay(date: Date) {
   return d;
 }
 
-function matchesDate(
-  isoDate: string,
-  filter: DateFilter,
-  range: { from: string; to: string }
-) {
+function matchesDate(isoDate: string, filter: DateFilter, range: { from: string; to: string }) {
   if (filter === "all") return true;
 
   const date = new Date(isoDate);
@@ -84,12 +79,8 @@ export function ConversationList({
   return (
     <div className="flex h-full w-[320px] shrink-0 flex-col border-r border-border bg-card">
       <div className="flex items-center justify-between px-4 pt-4">
-        <h1 className="text-[16px] font-semibold tracking-tight text-foreground">
-          Discussions
-        </h1>
-        <span className="text-[12px] text-muted-foreground">
-          {totalUnread} non lus
-        </span>
+        <h1 className="text-[16px] font-semibold tracking-tight text-foreground">Discussions</h1>
+        <span className="text-[12px] text-muted-foreground">{totalUnread} non lus</span>
       </div>
 
       <div className="px-4 pt-3">
@@ -107,6 +98,7 @@ export function ConversationList({
       <div className="flex items-center gap-1.5 px-4 pb-3 pt-3">
         {filters.map((f) => (
           <button
+            type="button"
             key={f}
             onClick={() => setFilter(f)}
             className={cn(
@@ -123,6 +115,7 @@ export function ConversationList({
 
       <div className="relative px-4 pb-3">
         <button
+          type="button"
           onClick={() => setDateMenuOpen((v) => !v)}
           className={cn(
             "flex h-8 w-full items-center gap-1.5 rounded-md border border-input bg-surface px-2.5 text-[12.5px] font-medium transition-colors hover:bg-muted",
@@ -132,9 +125,8 @@ export function ConversationList({
           <CalendarDays className="h-3.5 w-3.5 shrink-0" />
           <span className="truncate">{dateFilters[dateFilter]}</span>
           {dateFilter !== "all" && (
-            <span
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
               aria-label="Réinitialiser le filtre par date"
               onClick={(e) => {
                 e.stopPropagation();
@@ -144,7 +136,7 @@ export function ConversationList({
               className="ml-auto shrink-0 rounded px-1 text-[11px] text-muted-foreground hover:text-foreground"
             >
               Effacer
-            </span>
+            </button>
           )}
         </button>
 
@@ -152,6 +144,7 @@ export function ConversationList({
           <div className="absolute left-4 right-4 top-10 z-50 rounded-lg border border-border bg-card p-1.5 shadow-raised">
             {(Object.keys(dateFilters) as DateFilter[]).map((key) => (
               <button
+                type="button"
                 key={key}
                 onClick={() => {
                   setDateFilter(key);
@@ -189,6 +182,7 @@ export function ConversationList({
                   />
                 </label>
                 <button
+                  type="button"
                   onClick={() => setDateMenuOpen(false)}
                   className="h-8 w-full rounded-md bg-primary text-[12.5px] font-medium text-white transition-opacity hover:opacity-90"
                 >

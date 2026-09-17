@@ -12,14 +12,9 @@ interface OtpInputProps {
   disabled?: boolean;
 }
 
-export function OtpInput({
-  value,
-  onChange,
-  length = 6,
-  invalid,
-  disabled,
-}: OtpInputProps) {
+export function OtpInput({ value, onChange, length = 6, invalid, disabled }: OtpInputProps) {
   const refs = React.useRef<Array<HTMLInputElement | null>>([]);
+  const slots = React.useMemo(() => Array.from({ length }, (_, slot) => slot), [length]);
   const digits = React.useMemo(() => {
     const arr = value.split("").slice(0, length);
     while (arr.length < length) arr.push("");
@@ -59,19 +54,19 @@ export function OtpInput({
 
   return (
     <div className="flex items-center justify-between gap-2" onPaste={handlePaste}>
-      {digits.map((digit, i) => (
+      {slots.map((slot) => (
         <input
-          key={i}
+          key={slot}
           ref={(el) => {
-            refs.current[i] = el;
+            refs.current[slot] = el;
           }}
           inputMode="numeric"
-          autoComplete={i === 0 ? "one-time-code" : "off"}
+          autoComplete={slot === 0 ? "one-time-code" : "off"}
           maxLength={1}
-          value={digit}
+          value={digits[slot]}
           disabled={disabled}
-          onChange={(e) => handleChange(i, e.target.value)}
-          onKeyDown={(e) => handleKeyDown(i, e)}
+          onChange={(e) => handleChange(slot, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(slot, e)}
           className={cn(
             "h-12 w-11 rounded-md border bg-card text-center text-[18px] font-semibold text-foreground transition-colors",
             "border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-ring",

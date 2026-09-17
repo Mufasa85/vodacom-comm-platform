@@ -1,16 +1,16 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import {
+  BarChart3,
+  BookOpen,
+  LayoutDashboard,
   MessageSquare,
-  Users2,
   Phone,
   Settings,
-  LayoutDashboard,
-  BookOpen,
-  BarChart3,
+  Users2,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
@@ -30,7 +30,7 @@ export function IconRail() {
     <nav className="flex h-full w-[72px] shrink-0 flex-col items-center border-r border-border bg-card py-4">
       <Link href="/conversations" className="mb-6 flex h-9 w-9 items-center justify-center">
         <span className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-primary">
-          <svg width="14" height="12" viewBox="0 0 16 14" fill="none">
+          <svg width="14" height="12" viewBox="0 0 16 14" fill="none" aria-hidden="true">
             <rect x="0" y="8" width="3" height="6" rx="1" fill="#fff" />
             <rect x="6.5" y="4.5" width="3" height="9.5" rx="1" fill="#fff" />
             <rect x="13" y="0" width="3" height="14" rx="1" fill="#fff" />
@@ -74,7 +74,10 @@ export function IconRail() {
         >
           <Settings className="h-[19px] w-[19px]" strokeWidth={1.9} />
         </Link>
-        <Link href="/profile" className="mt-1 h-9 w-9 overflow-hidden rounded-full ring-2 ring-transparent transition-all hover:ring-primary/30">
+        <Link
+          href="/profile"
+          className="mt-1 h-9 w-9 overflow-hidden rounded-full ring-2 ring-transparent transition-all hover:ring-primary/30"
+        >
           <span className="flex h-full w-full items-center justify-center bg-[#111111] text-[12px] font-semibold text-white">
             SA
           </span>

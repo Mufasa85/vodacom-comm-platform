@@ -21,15 +21,10 @@ const links: [number, number][] = [
 
 export function NetworkIllustration() {
   return (
-    <svg
-      viewBox="0 0 380 280"
-      fill="none"
-      className="h-full w-full"
-      aria-hidden="true"
-    >
-      {links.map(([a, b], i) => (
+    <svg viewBox="0 0 380 280" fill="none" className="h-full w-full" aria-hidden="true">
+      {links.map(([a, b]) => (
         <line
-          key={i}
+          key={`${a}-${b}`}
           x1={nodes[a].cx}
           y1={nodes[a].cy}
           x2={nodes[b].cx}
@@ -40,8 +35,8 @@ export function NetworkIllustration() {
         />
       ))}
 
-      {nodes.map((n, i) => (
-        <g key={i}>
+      {nodes.map((n) => (
+        <g key={`${n.cx}-${n.cy}`}>
           <motion.circle
             cx={n.cx}
             cy={n.cy}

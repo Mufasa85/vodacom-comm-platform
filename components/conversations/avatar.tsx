@@ -1,4 +1,4 @@
-import { getInitials, cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 
 export function Avatar({
   name,
@@ -11,13 +11,21 @@ export function Avatar({
   online?: boolean;
   size?: "sm" | "md" | "lg";
 }) {
-  const dims = size === "lg" ? "h-10 w-10 text-[13px]" : size === "sm" ? "h-6 w-6 text-[10px]" : "h-8 w-8 text-[11.5px]";
+  const dims =
+    size === "lg"
+      ? "h-10 w-10 text-[13px]"
+      : size === "sm"
+        ? "h-6 w-6 text-[10px]"
+        : "h-8 w-8 text-[11.5px]";
   const dotDims = size === "lg" ? "h-2.5 w-2.5" : "h-2 w-2";
 
   return (
     <span className="relative inline-flex shrink-0">
       <span
-        className={cn("flex items-center justify-center rounded-full font-semibold text-white", dims)}
+        className={cn(
+          "flex items-center justify-center rounded-full font-semibold text-white",
+          dims
+        )}
         style={{ backgroundColor: color }}
       >
         {getInitials(name)}

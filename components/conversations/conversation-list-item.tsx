@@ -1,9 +1,8 @@
 "use client";
 
 import { Pin } from "lucide-react";
-
-import type { Conversation } from "@/lib/types/conversation";
 import { ChannelIcon } from "@/components/conversations/channel-icon";
+import type { Conversation } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
 
 export function ConversationListItem({
@@ -17,6 +16,7 @@ export function ConversationListItem({
 }) {
   return (
     <button
+      type="button"
       onClick={onSelect}
       className={cn(
         "group flex w-full items-center gap-3 rounded-md px-2.5 py-2.5 text-left transition-colors",
@@ -35,7 +35,9 @@ export function ConversationListItem({
           <span
             className={cn(
               "truncate text-[13.5px]",
-              active || conversation.unread ? "font-semibold text-foreground" : "font-medium text-foreground/90"
+              active || conversation.unread
+                ? "font-semibold text-foreground"
+                : "font-medium text-foreground/90"
             )}
           >
             {conversation.name}

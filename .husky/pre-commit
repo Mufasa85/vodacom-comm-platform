@@ -1,0 +1,4 @@
+npx biome check --staged --write --no-errors-on-unmatched
+git update-index --again
+
+npx tsc --noEmit

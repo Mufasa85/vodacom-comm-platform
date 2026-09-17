@@ -1,10 +1,7 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Enter your work email address.")
-    .email("Enter a valid email address."),
+  email: z.string().min(1, "Enter your work email address.").email("Enter a valid email address."),
   password: z.string().min(1, "Enter your password."),
   remember: z.boolean().optional(),
 });
@@ -19,10 +16,7 @@ export const otpSchema = z.object({
 export type OtpValues = z.infer<typeof otpSchema>;
 
 export const forgotPasswordSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Enter your work email address.")
-    .email("Enter a valid email address."),
+  email: z.string().min(1, "Enter your work email address.").email("Enter a valid email address."),
 });
 export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 

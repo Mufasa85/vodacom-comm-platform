@@ -1,4 +1,14 @@
-import { Megaphone, Bot, Phone, Wifi, CreditCard, Wallet, FileText, Star, User } from "lucide-react";
+import {
+  Bot,
+  CreditCard,
+  FileText,
+  Megaphone,
+  Phone,
+  Star,
+  User,
+  Wallet,
+  Wifi,
+} from "lucide-react";
 
 import type { Conversation } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
@@ -26,7 +36,8 @@ export function ChannelIcon({
 }) {
   const Icon = iconMap[icon];
   const dims = size === "lg" ? "h-11 w-11" : size === "sm" ? "h-8 w-8" : "h-10 w-10";
-  const iconDims = size === "lg" ? "h-[19px] w-[19px]" : size === "sm" ? "h-4 w-4" : "h-[17px] w-[17px]";
+  const iconDims =
+    size === "lg" ? "h-[19px] w-[19px]" : size === "sm" ? "h-4 w-4" : "h-[17px] w-[17px]";
 
   return (
     <span

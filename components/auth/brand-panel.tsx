@@ -1,5 +1,5 @@
-import { VodacomMark } from "./vodacom-mark";
 import { NetworkIllustration } from "./network-illustration";
+import { VodacomMark } from "./vodacom-mark";
 
 export function BrandPanel() {
   return (
@@ -22,18 +22,18 @@ export function BrandPanel() {
           Every customer conversation, one connected platform.
         </p>
         <p className="mt-3 text-[14px] leading-relaxed text-white/75">
-          Support, live assistance and AI-powered conversations for
-          Vodacom&apos;s customer care teams — unified in a single workspace.
+          Support, live assistance and AI-powered conversations for Vodacom&apos;s customer care
+          teams — unified in a single workspace.
         </p>
       </div>
 
       <div className="relative z-10 flex items-center gap-6 text-[13px] text-white/70">
         <span>© {new Date().getFullYear()} Vodacom Group</span>
         <span className="h-1 w-1 rounded-full bg-white/40" />
-        <a href="#" className="hover:text-white">
+        <a href="https://www.vodacom.com/privacy-policy" className="hover:text-white">
           Privacy
         </a>
-        <a href="#" className="hover:text-white">
+        <a href="mailto:support@vodacom.com" className="hover:text-white">
           Support
         </a>
       </div>

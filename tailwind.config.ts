@@ -2,11 +2,7 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: ["class"],
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./lib/**/*.{ts,tsx}",
-  ],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
   theme: {
     container: {
       center: true,
@@ -50,7 +46,7 @@ const config: Config = {
         raised: "0 4px 16px rgba(17, 17, 17, 0.08)",
       },
       keyframes: {
-        "shimmer": {
+        shimmer: {
           "0%": { backgroundPosition: "-468px 0" },
           "100%": { backgroundPosition: "468px 0" },
         },

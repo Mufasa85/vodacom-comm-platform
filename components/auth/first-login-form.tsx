@@ -1,21 +1,17 @@
 "use client";
 
-import * as React from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-
-import { Button } from "@/components/ui/button";
-import { InsetInput } from "@/components/ui/inset-input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Alert } from "@/components/ui/alert";
+import * as React from "react";
+import { useForm } from "react-hook-form";
 import { PasswordInput } from "@/components/auth/password-input";
 import { PasswordStrength } from "@/components/auth/password-strength";
-import {
-  firstLoginSchema,
-  type FirstLoginValues,
-} from "@/lib/validations/auth";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { InsetInput } from "@/components/ui/inset-input";
+import { Label } from "@/components/ui/label";
+import { type FirstLoginValues, firstLoginSchema } from "@/lib/validations/auth";
 
 export function FirstLoginForm() {
   const router = useRouter();
@@ -38,7 +34,7 @@ export function FirstLoginForm() {
 
   const password = watch("password");
 
-  async function onSubmit(values: FirstLoginValues) {
+  async function onSubmit(_values: FirstLoginValues) {
     setServerError(null);
     await new Promise((r) => setTimeout(r, 900));
     router.push("/conversations");
@@ -53,8 +49,8 @@ export function FirstLoginForm() {
         Set up your account
       </h1>
       <p className="mt-1.5 text-[14px] text-muted-foreground">
-        This is your first sign-in. Confirm your name and choose a password
-        to activate your account.
+        This is your first sign-in. Confirm your name and choose a password to activate your
+        account.
       </p>
 
       {serverError && (
@@ -100,23 +96,19 @@ export function FirstLoginForm() {
             {...register("confirmPassword")}
           />
           {errors.confirmPassword && (
-            <p className="text-[12.5px] text-danger">
-              {errors.confirmPassword.message}
-            </p>
+            <p className="text-[12.5px] text-danger">{errors.confirmPassword.message}</p>
           )}
         </div>
 
         <div className="flex items-start gap-2.5">
           <Checkbox id="acceptTerms" className="mt-0.5" {...register("acceptTerms")} />
           <Label htmlFor="acceptTerms" className="font-normal leading-snug text-muted-foreground">
-            I agree to Vodacom&apos;s acceptable use policy and data
-            handling guidelines for internal systems.
+            I agree to Vodacom&apos;s acceptable use policy and data handling guidelines for
+            internal systems.
           </Label>
         </div>
         {errors.acceptTerms && (
-          <p className="-mt-2 text-[12.5px] text-danger">
-            {errors.acceptTerms.message}
-          </p>
+          <p className="-mt-2 text-[12.5px] text-danger">{errors.acceptTerms.message}</p>
         )}
 
         <Button type="submit" className="w-full" size="lg" loading={isSubmitting}>

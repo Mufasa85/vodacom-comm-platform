@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { Search, X } from "lucide-react";
-
-import type { Conversation } from "@/lib/types/conversation";
+import * as React from "react";
 import { ChannelIcon } from "@/components/conversations/channel-icon";
+import type { Conversation } from "@/lib/types/conversation";
 import { cn } from "@/lib/utils";
 
 export function ChatHeader({
@@ -26,9 +25,7 @@ export function ChatHeader({
     <div className="flex h-16 shrink-0 items-center gap-3 border-b border-border bg-card px-5">
       <ChannelIcon icon={conversation.icon} accent={conversation.accent} />
       <div className="min-w-0 flex-1">
-        <h2 className="truncate text-[15px] font-semibold text-foreground">
-          {conversation.name}
-        </h2>
+        <h2 className="truncate text-[15px] font-semibold text-foreground">{conversation.name}</h2>
         <p className="truncate text-[12.5px] text-muted-foreground">
           {conversation.isChannel
             ? `Salon · ${conversation.memberCount ?? 0} membres`
@@ -42,7 +39,6 @@ export function ChatHeader({
           <div className="relative w-[220px] sm:w-[280px]">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <input
-              autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher dans la conversation…"
@@ -81,6 +77,7 @@ function HeaderIconButton({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-label={label}
       className={cn(

@@ -1,11 +1,10 @@
 "use client";
 
-import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bell, ChevronDown, Globe, Sun, Moon } from "lucide-react";
-
-import { useTheme } from "@/components/theme-provider";
+import { Bell, ChevronDown, Globe, Moon, Sun } from "lucide-react";
+import * as React from "react";
 import { VodacomMark } from "@/components/auth/vodacom-mark";
+import { useTheme } from "@/components/theme-provider";
 
 export function Topbar() {
   const [lang, setLang] = React.useState<"FR" | "EN">("FR");
@@ -20,6 +19,7 @@ export function Topbar() {
 
       <div className="flex items-center gap-1.5">
         <button
+          type="button"
           onClick={() => setLang((l) => (l === "FR" ? "EN" : "FR"))}
           className="flex h-9 items-center gap-1.5 rounded-md px-2.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
@@ -28,6 +28,7 @@ export function Topbar() {
         </button>
 
         <button
+          type="button"
           onClick={toggleTheme}
           aria-label={theme === "dark" ? "Passer au thème clair" : "Passer au thème sombre"}
           className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -61,6 +62,7 @@ export function Topbar() {
 
         <div className="relative">
           <button
+            type="button"
             onClick={() => setNotifOpen((v) => !v)}
             className="relative flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
@@ -78,6 +80,7 @@ export function Topbar() {
                 { title: "TOBi a répondu à votre demande", time: "il y a 18 min" },
               ].map((n) => (
                 <button
+                  type="button"
                   key={n.title}
                   className="flex w-full flex-col items-start rounded-md px-2.5 py-2 text-left transition-colors hover:bg-muted"
                 >
@@ -89,7 +92,10 @@ export function Topbar() {
           )}
         </div>
 
-        <button className="ml-1 flex h-9 items-center gap-2 rounded-md pl-1 pr-2 transition-colors hover:bg-muted">
+        <button
+          type="button"
+          className="ml-1 flex h-9 items-center gap-2 rounded-md pl-1 pr-2 transition-colors hover:bg-muted"
+        >
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#111111] text-[11px] font-semibold text-white">
             MC
           </span>

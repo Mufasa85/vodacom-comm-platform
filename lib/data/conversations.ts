@@ -1,7 +1,19 @@
 import type { Conversation } from "@/lib/types/conversation";
 
-const tobi = { id: "tobi", name: "TOBi AI", role: "bot" as const, online: true, avatarColor: "#111111" };
-const conseillerSarah = { id: "agent-sarah", name: "Sarah — Service client", role: "agent" as const, online: true, avatarColor: "#E60000" };
+const tobi = {
+  id: "tobi",
+  name: "TOBi AI",
+  role: "bot" as const,
+  online: true,
+  avatarColor: "#111111",
+};
+const conseillerSarah = {
+  id: "agent-sarah",
+  name: "Sarah — Service client",
+  role: "agent" as const,
+  online: true,
+  avatarColor: "#E60000",
+};
 
 /** Horodatage relatif au jour courant, pour que les données de démo restent cohérentes. */
 function at(daysAgo: number, time: string) {
@@ -136,7 +148,11 @@ export const conversations: Conversation[] = [
         id: "m6",
         senderId: "tobi",
         kind: "options",
-        options: ["1 Go — 1 jour — 1 500 FC", "5 Go — 7 jours — 7 500 FC", "10 Go — 30 jours — 15 000 FC"],
+        options: [
+          "1 Go — 1 jour — 1 500 FC",
+          "5 Go — 7 jours — 7 500 FC",
+          "10 Go — 30 jours — 15 000 FC",
+        ],
         time: "13:51",
       },
       {
@@ -229,7 +245,11 @@ export const conversations: Conversation[] = [
         id: "m3",
         senderId: "tobi",
         kind: "options",
-        options: ["1 Go — 1 jour — 1 500 FC", "5 Go — 7 jours — 7 500 FC", "10 Go — 30 jours — 15 000 FC"],
+        options: [
+          "1 Go — 1 jour — 1 500 FC",
+          "5 Go — 7 jours — 7 500 FC",
+          "10 Go — 30 jours — 15 000 FC",
+        ],
         time: "11:03",
       },
       {
